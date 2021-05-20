@@ -42,10 +42,10 @@ def miller_rabin(n, k=40):
     return True
 
 
-def _is_prime_fermat(n):
+def _is_prime_fermat(n,b=2):
   """Fermat's prime criterion
   Returns False is returned if x is definitely composite, True if posible prime."""
-  i = pow(2,n-1,n)
+  i = pow(b,n-1,n)
   return i == 1 or i == 0
 
 
@@ -61,6 +61,12 @@ def _is_prime_mr(n):
     return False
   else:
     return miller_rabin(n)
+
+def _is_prime_mr_2(n):
+  if _is_prime_fermat(n) and _is_prime_fermat(n,b=3) and _is_prime_fermat(n,b=5):
+    return miller_rabin
+  else:
+    return False
 
 
 def _is_prime_gmpy(n):
@@ -92,6 +98,8 @@ def test(l):
  
     timeit2(miller_rabin, l)
     timeit2(_is_prime_mr, l, F=miller_rabin)
+    timeit2(_is_prime_mr_2, l, F=miller_rabin)
+
 
     print("-" * 80)
 
@@ -99,5 +107,5 @@ def test(l):
     timeit2(_is_prime_gmpy , l, F=gmpy2.is_prime)
 
 if __name__ == "__main__":
-    test(10000)
+    test(100000)
 
