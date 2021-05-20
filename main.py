@@ -49,11 +49,11 @@ def _is_prime_fermat(n,b=2):
   return i == 1 or i == 0
 
 
-def _is_prime_fermat_gmpy(n):
+def _is_prime_fermat_gmpy(n,b=2):
   """Fermat's prime criterion
   Returns False is returned if x is definitely composite, True if posible prime."""
-  i = gmpy2.powmod(2,n-1,n)
-  return i == 1 or i == 0
+  i = gmpy2.powmod(b,n-1,n)
+  return i == 1
 
 
 def _is_prime_mr(n):
@@ -71,6 +71,13 @@ def _is_prime_mr_2(n):
 
 def _is_prime_gmpy(n):
   if not _is_prime_fermat_gmpy(n):
+    return False
+  else:
+    return gmpy2.is_prime(n)
+
+
+def _is_prime_gmpy_2(n):
+  if not _is_prime_fermat_gmpy(n) and _is_prime_fermat_gmpy(n,b=3) and _is_prime_fermat_gmpy(n,b=5):
     return False
   else:
     return gmpy2.is_prime(n)
@@ -105,6 +112,8 @@ def test(l):
 
     timeit2(gmpy2.is_prime, l)
     timeit2(_is_prime_gmpy , l, F=gmpy2.is_prime)
+    timeit2(_is_prime_gmpy_2 , l, F=gmpy2.is_prime)
+
 
 if __name__ == "__main__":
     test(100000)
