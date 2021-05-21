@@ -63,7 +63,25 @@ def _is_prime_mr(n):
     return miller_rabin(n)
 
 def _is_prime_mr_2(n):
+  if _is_prime_fermat(n) and _is_prime_fermat(n,b=3):
+    return miller_rabin
+  else:
+    return False
+
+def _is_prime_mr_3(n):
   if _is_prime_fermat(n) and _is_prime_fermat(n,b=3) and _is_prime_fermat(n,b=5):
+    return miller_rabin
+  else:
+    return False
+
+def _is_prime_mr_4(n):
+  if _is_prime_fermat(n) and _is_prime_fermat(n,b=3) and _is_prime_fermat(n,b=5) and _is_prime_fermat(n,b=7):
+    return miller_rabin
+  else:
+    return False
+
+def _is_prime_mr_5(n):
+  if _is_prime_fermat(n) and _is_prime_fermat(n,b=3) and _is_prime_fermat(n,b=5)  and _is_prime_fermat(n,b=7) and _is_prime_fermat(n,b=11):
     return miller_rabin
   else:
     return False
@@ -77,10 +95,11 @@ def _is_prime_gmpy(n):
 
 
 def _is_prime_gmpy_2(n):
-  if not _is_prime_fermat_gmpy(n) and _is_prime_fermat_gmpy(n,b=3) and _is_prime_fermat_gmpy(n,b=5):
+  if not _is_prime_fermat_gmpy(n) and _is_prime_fermat_gmpy(n,b=3):
     return False
   else:
     return gmpy2.is_prime(n)
+
 
 
 def timeit2(f, l, F=None):
@@ -106,6 +125,10 @@ def test(l):
     timeit2(miller_rabin, l)
     timeit2(_is_prime_mr, l, F=miller_rabin)
     timeit2(_is_prime_mr_2, l, F=miller_rabin)
+    timeit2(_is_prime_mr_3, l, F=miller_rabin)
+    timeit2(_is_prime_mr_4, l, F=miller_rabin)
+    timeit2(_is_prime_mr_5, l, F=miller_rabin)
+
 
 
     print("-" * 80)
