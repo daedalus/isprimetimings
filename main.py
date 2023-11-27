@@ -24,11 +24,11 @@ def miller_rabin(n, k=40):
         s //= 2
     i = 0
     #while i <= k:
-    for i in range(0,k):
+    for _ in range(0,k):
         #print(i,k)
         a = random.randrange(2, n - 1)
         x = pow(a, s, n)
-        if x == 1 or x == n - 1:
+        if x in [1, n - 1]:
             continue
         j = 0
         while j <= r - 1:
@@ -38,15 +38,14 @@ def miller_rabin(n, k=40):
             j += 1
         else:
             return False
-        #i += 1
     return True
 
 
 def _is_prime_fermat(n,b=2):
-  """Fermat's prime criterion
+    """Fermat's prime criterion
   Returns False is returned if x is definitely composite, True if posible prime."""
-  i = pow(b,n-1,n)
-  return i == 1 or i == 0
+    i = pow(b,n-1,n)
+    return i in [1, 0]
 
 
 def _is_prime_fermat_gmpy(n,b=2):
@@ -57,10 +56,7 @@ def _is_prime_fermat_gmpy(n,b=2):
 
 
 def _is_prime_mr(n):
-  if not _is_prime_fermat(n):
-    return False
-  else:
-    return miller_rabin(n)
+    return False if not _is_prime_fermat(n) else miller_rabin(n)
 
 def _is_prime_mr_2(n):
   if _is_prime_fermat(n) and _is_prime_fermat(n,b=3):
@@ -88,10 +84,7 @@ def _is_prime_mr_5(n):
 
 
 def _is_prime_gmpy(n):
-  if not _is_prime_fermat_gmpy(n):
-    return False
-  else:
-    return gmpy2.is_prime(n)
+    return False if not _is_prime_fermat_gmpy(n) else gmpy2.is_prime(n)
 
 
 def _is_prime_gmpy_2(n):
@@ -106,10 +99,7 @@ def timeit2(f, l, F=None):
     t0 = time.time()
     for b in range(5, l):
         f(b)
-    if F != None:
-        Fn = F.__name__
-    else:
-        Fn = "None"
+    Fn = F.__name__ if F != None else "None"
     print("%s %s %f" % (f.__name__.ljust(30), Fn.ljust(30), time.time() - t0))
 
 
